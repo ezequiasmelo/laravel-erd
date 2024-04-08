@@ -170,7 +170,8 @@ class LaravelERD
                 "isKey"  => $isPrimaryKey,
                 "figure" => $isPrimaryKey ? "Hexagon" : "Decision",
                 "color"  => $isPrimaryKey ? "#be4b15" : "#6ea5f8",
-                "info"   => config('laravel-erd.display.show_data_type') ? Schema::getColumnType($model->getTable(), $column) : "",
+                // "info"   => config('laravel-erd.display.show_data_type') ? Schema::getColumnType($model->getTable(), $column) : "",
+                "info"   => Schema::getColumnType($model->getTable(), $column),
             ];
         }
         return [
@@ -182,6 +183,7 @@ class LaravelERD
     private function getLinks(Model $model)
     {
         $relationships = $this->getRelationships($model);
+// echo json_encode($relationships);
         $linkItems = [];
         foreach ($relationships as $relationship) {
             $fromTable = $model->getTable();
@@ -207,7 +209,14 @@ class LaravelERD
                 "toPort"   => explode(".", $toPort)[1],//strip tablename
                 "type"     => $relationship['type'],
             ];
+            // $linkItems[] = [
+            //     "from"     => $fromTable,
+            //     "fromPort" => explode(".", $fromPort)[1], //strip tablename
+            //     "to"       => $toTable,
+            //     "toPort"   => explode(".", $toPort)[1],//strip tablename
+            // ];
         }
         return $linkItems;
+        // return [];
     }
 }
